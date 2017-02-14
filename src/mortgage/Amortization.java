@@ -49,10 +49,7 @@ public class Amortization {
         return Term;
     }
 
-    public double calculateMonthlyPayment(){
-       //double P=getPrincipal();
-       //double I=getInterest();
-       //double T=getTerm();
+    private double calculateMonthlyPayment(){
        double M;
        double interestPlus=this.interest+1;
        double interestPowered=Math.pow(interestPlus, -this.term);
