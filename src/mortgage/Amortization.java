@@ -20,6 +20,12 @@ public class Amortization {
     public Amortization(double Principal, double Interest, double Term)
     {
         this.principal=Principal;
+        //this might be strange for people.  If they enter 3.75 as the interst rate
+        //and then later call getInterst they'll get 3.75/100/12.
+        //that will be confusing
+        //maybe add a private variable calle periodicRate
+        //this.interest = Interest;
+        //this.periodicRate = setPeriodicRate(Interest);
         this.interest=convertInterest(Interest);
         this.term=convertTermToMonths(Term);
         this.monthlyPayment=calculateMonthlyPayment();
@@ -34,10 +40,13 @@ public class Amortization {
     public double getTerm(){
         return this.term;
     }
-    private double convertInterest(double Interest)
+    //change to private void setPeriodicRate(double Interest)
+    private convertInterest(double Interest)
     {
         Interest/=100;
         Interest/=12;
+        //erase the above and replace with
+        //this.periodicRate = this.Interest/100/12;
         return Interest;
     }
     private double convertTermToMonths(double Term)
@@ -59,11 +68,18 @@ public class Amortization {
     private double getMonthlyPayment(){
         return this.monthlyPayment;
     }
+    //for the record, returning strings from classes that is used for screen output is almost
+    //never done in real code. You could create a function called getMonthlyPaymentFormatted()
+    //and have it return a monthly payment like $1,405.67
+    //then in your main app you would output
+    //string payment = Amortization.getMonthlyPaymentFormatted();
+    //System.out.println("The monthly payment is " message); not really sure how java handles string concatenation, but you get the point
     public String getMonthly(){
         String message = "Monthly Payment: "+this.getMonthlyPayment()+"\n";
         return message;
     }
-    
+    //it isn't exactly clear what this does. You should name it better
+    //like getAmortizationArray maybe
     private double[][] getPaymentArray(){
         double tempInterest=0;
         double tempPrincipal=0;
@@ -85,6 +101,9 @@ public class Amortization {
         }
         return amortization;
     }
+    //this likely doesn't belong in the Amortization class because it is output. but for this simple
+    //app you can leave it. But I might call it getAmortizationFormatted()
+
     public String getSchedule(){
         String message="";
         double[][]amortization=this.getPaymentArray();
