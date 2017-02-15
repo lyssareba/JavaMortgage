@@ -74,7 +74,9 @@ public class Amortization {
     //then in your main app you would output
     //string payment = Amortization.getMonthlyPaymentFormatted();
     //System.out.println("The monthly payment is " message); not really sure how java handles string concatenation, but you get the point
-    public String getMonthly(){
+    public String getMonthly(){ //there are double curlys here - this will probably cause an error
+    } //second curly here
+        //this.monthlyPayment should be set. No need to use the getter.
         String message = "Monthly Payment: "+this.getMonthlyPayment()+"\n";
         return message;
     }
@@ -83,10 +85,11 @@ public class Amortization {
     private double[][] getPaymentArray(){
         double tempInterest=0;
         double tempPrincipal=0;
+        //this.principal should be set why call the getter from within the class?
         double P=getPrincipal();
        
         int size = (int) this.term;
-        
+        //this.monthlyPayment should already be set why are you calling getMonthlyPayment()
         double M=getMonthlyPayment();
         double[][] amortization=new double[size][2];
                 
