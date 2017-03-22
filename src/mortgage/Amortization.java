@@ -21,8 +21,18 @@ public class Amortization {
     public Amortization(double Principal, double Interest, double Term)
     {
         this.principal=Principal;
+<<<<<<< HEAD
         this.interest=Interest;
         this.monthlyInterest=setMonthlyInterest(Interest);
+=======
+        //this might be strange for people.  If they enter 3.75 as the interst rate
+        //and then later call getInterst they'll get 3.75/100/12.
+        //that will be confusing
+        //maybe add a private variable calle periodicRate
+        //this.interest = Interest;
+        //this.periodicRate = setPeriodicRate(Interest);
+        this.interest=convertInterest(Interest);
+>>>>>>> 8350b4870e6b72343840de2cb6bd568227624c5d
         this.term=convertTermToMonths(Term);
         this.monthlyPayment=calculateMonthlyPayment();
         
@@ -36,9 +46,20 @@ public class Amortization {
     public double getTerm(){
         return this.term;
     }
+<<<<<<< HEAD
     private double setMonthlyInterest(double Interest)
     {
       return this.monthlyInterest=this.interest/100/12;
+=======
+    //change to private void setPeriodicRate(double Interest)
+    private convertInterest(double Interest)
+    {
+        Interest/=100;
+        Interest/=12;
+        //erase the above and replace with
+        //this.periodicRate = this.Interest/100/12;
+        return Interest;
+>>>>>>> 8350b4870e6b72343840de2cb6bd568227624c5d
     }
     private double convertTermToMonths(double Term)
     {
@@ -59,10 +80,19 @@ public class Amortization {
     public double getMonthlyPayment(){
         return this.monthlyPayment;
     }
-    public String getMonthly(){
+    //for the record, returning strings from classes that is used for screen output is almost
+    //never done in real code. You could create a function called getMonthlyPaymentFormatted()
+    //and have it return a monthly payment like $1,405.67
+    //then in your main app you would output
+    //string payment = Amortization.getMonthlyPaymentFormatted();
+    //System.out.println("The monthly payment is " message); not really sure how java handles string concatenation, but you get the point
+    public String getMonthly(){ //there are double curlys here - this will probably cause an error
+    } //second curly here
+        //this.monthlyPayment should be set. No need to use the getter.
         String message = "Monthly Payment: "+this.getMonthlyPayment()+"\n";
         return message;
     }
+<<<<<<< HEAD
     
     private double[][] getAmortizationArray(){
         double tempInterest=0;
@@ -70,6 +100,19 @@ public class Amortization {
         double P=this.principal;
        
         int size = (int) this.term;
+=======
+    //it isn't exactly clear what this does. You should name it better
+    //like getAmortizationArray maybe
+    private double[][] getPaymentArray(){
+        double tempInterest=0;
+        double tempPrincipal=0;
+        //this.principal should be set why call the getter from within the class?
+        double P=getPrincipal();
+       
+        int size = (int) this.term;
+        //this.monthlyPayment should already be set why are you calling getMonthlyPayment()
+        double M=getMonthlyPayment();
+>>>>>>> 8350b4870e6b72343840de2cb6bd568227624c5d
         double[][] amortization=new double[size][2];
                 
         for(int i=0;i<size;i++)
@@ -83,6 +126,9 @@ public class Amortization {
         }
         return amortization;
     }
+    //this likely doesn't belong in the Amortization class because it is output. but for this simple
+    //app you can leave it. But I might call it getAmortizationFormatted()
+
     public String getSchedule(){
         NumberFormat currency = NumberFormat.getCurrencyInstance();
         String message="";
