@@ -6,6 +6,10 @@
 package mortgage;
 
 import java.util.Scanner;
+import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.text.JTextComponent;
+import mortgage.Qualify;
 
 /**
  *
@@ -82,5 +86,41 @@ public class Validator {
             sc.nextLine();  // discard any other data entered on the line
         }
         return d;
+    }
+    public boolean isPresent(JTextComponent c, String fieldName)
+    {
+        if(c.getText().length() == 0)
+        {
+            showMessage(c, fieldName + " is a required field.");
+            c.requestFocusInWindow();
+            return false;
+        }
+        return true;
+    }
+    public boolean isDouble(JTextComponent c, String fieldName)
+    {
+        try
+        {
+            double d= Double.parseDouble(c.getText());
+            return true;
+        }
+        catch(NumberFormatException e)
+        {
+            showMessage(c, fieldName + " must be a valid number.");
+            c.requestFocusInWindow();
+            return false;
+        }
+    }
+    public boolean isDebtFree(JTextComponent c, String fieldName)
+    {
+        showMessage(c, fieldName + " sets your debt-to-income ratio above 41%. "
+                + "You may not qulify for a loan. Enter a lower debt amount.");
+        c.requestFocusInWindow();
+        return false;
+    }
+
+    private void showMessage(JTextComponent c, String message) {
+        JOptionPane.showMessageDialog(c, message, "Invalid Entry",
+                JOptionPane.ERROR_MESSAGE);
     }
 }

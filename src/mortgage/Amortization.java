@@ -15,12 +15,14 @@ public class Amortization {
     private double monthlyPayment;
     private double principal;
     private double interest;
+    private double monthlyInterest;
     private double term;
     
     public Amortization(double Principal, double Interest, double Term)
     {
         this.principal=Principal;
-        this.interest=convertInterest(Interest);
+        this.interest=Interest;
+        this.monthlyInterest=setMonthlyInterest(Interest);
         this.term=convertTermToMonths(Term);
         this.monthlyPayment=calculateMonthlyPayment();
         
@@ -34,11 +36,9 @@ public class Amortization {
     public double getTerm(){
         return this.term;
     }
-    private double convertInterest(double Interest)
+    private double setMonthlyInterest(double Interest)
     {
-        Interest/=100;
-        Interest/=12;
-        return Interest;
+      return this.monthlyInterest=this.interest/100/12;
     }
     private double convertTermToMonths(double Term)
     {
@@ -51,12 +51,12 @@ public class Amortization {
 
     private double calculateMonthlyPayment(){
        double M;
-       double interestPlus=this.interest+1;
+       double interestPlus=this.monthlyInterest+1;
        double interestPowered=Math.pow(interestPlus, -this.term);
-       M=(this.principal*this.interest)/(1-interestPowered);
+       M=(this.principal*this.monthlyInterest)/(1-interestPowered);
        return Math.round(M);
     }
-    private double getMonthlyPayment(){
+    public double getMonthlyPayment(){
         return this.monthlyPayment;
     }
     public String getMonthly(){
@@ -64,19 +64,17 @@ public class Amortization {
         return message;
     }
     
-    private double[][] getPaymentArray(){
+    private double[][] getAmortizationArray(){
         double tempInterest=0;
         double tempPrincipal=0;
-        double P=getPrincipal();
+        double P=this.principal;
        
         int size = (int) this.term;
-        
-        double M=getMonthlyPayment();
         double[][] amortization=new double[size][2];
                 
         for(int i=0;i<size;i++)
         {
-            tempInterest=P*this.interest;
+            tempInterest=P*this.monthlyInterest;
             amortization[i][0]=tempInterest;
             tempPrincipal=this.monthlyPayment-tempInterest;
             amortization[i][1]=tempPrincipal;
@@ -86,12 +84,13 @@ public class Amortization {
         return amortization;
     }
     public String getSchedule(){
+        NumberFormat currency = NumberFormat.getCurrencyInstance();
         String message="";
-        double[][]amortization=this.getPaymentArray();
+        double[][]amortization=this.getAmortizationArray();
         for(int i=0;i<amortization.length;i++)
         {
-            message+="Month "+(i+1)+"\n\t"+"Principal: "+amortization[i][1]+"\n\t"
-                    +"Interest: "+amortization[i][0]+"\n\t";
+            message+="Month "+(i+1)+"\n\t"+"Principal: "+currency.format(amortization[i][1])+"\n\t"
+                    +"Interest: "+currency.format(amortization[i][0])+"\n\n\t";
         }
         return message;
     }
